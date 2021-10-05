@@ -1,9 +1,8 @@
 import React from "react";
 import css from "./styles.module.css"
 import { Card } from "../Card";
-import { useState } from "react";
 // import { Input } from "../common/Input";
-// import { Button } from "../common/Button";
+import { Button } from "../common/Button";
 
 
 export class Dashboard extends React.Component {
@@ -12,10 +11,10 @@ export class Dashboard extends React.Component {
         this.state = {
             value: "",
             tasks: [
-                { text: "text1", id: 1, isDone: true },
-                { text: "text2", id: 2, isDone: false },
-                { text: "text3", id: 3, isDone: true },
-                { text: "text4", id: 4, isDone: false },
+                { text: "text1", id: 1,  status: "toDo" },
+                { text: "text2", id: 2,  status: "toDo" },
+                { text: "text3", id: 3,  status: "toDo" },
+                { text: "text4", id: 4,  status: "toDo" },
             ]
           };
           this.addTasksOnClick=this.addTasksOnClick.bind(this);
@@ -33,11 +32,21 @@ export class Dashboard extends React.Component {
         this.setState((prevState) => ({
             tasks: [
               ...prevState.tasks,
-              { text: prevState.value, isDone: false, id: prevState.tasks.length + 1 }
+              { text: prevState.value, status:"toDo", id: prevState.tasks.length + 1 }
             ],
-           
+           value: ""
           }));
     };
+    toStartProcess = () => {
+        this.setState((prevState) => ({
+            status: "toProcess"
+        }));
+
+    };
+
+    filterTasks () {
+
+    }
     
     render(){
         return (
@@ -49,7 +58,7 @@ export class Dashboard extends React.Component {
                         {this.state.tasks.map((item) => {
                             return (
                                 <div key={item.id} className={css.tasks}>
-                                    {/* <Button className={css.tasks_button} title="Приступить к выполнению" /> */}
+                                    <button type="button" onClick={this.toStartProcess}>start</button>
                                     <div>{item.text} </div>
                                 </div>
 
@@ -65,18 +74,42 @@ export class Dashboard extends React.Component {
                                 onChange={this.changeValue}
                                 className={css.input} /> 
                         </label>
-                        <button onClick={this.addTasksOnClick}>ADD</button>
-                            {/* <Button
-                                title="Добавить"
-                                onClick={this.addTasksOnClick} /> */}
-                            {/* <Button title="Отмена"
-                                    onClick={this.addTasksOnClick} /> */}
+                        <button type="button" onClick={this.addTasksOnClick}>ADD</button>
                     </form>
                   }
                 >
                 </Card>
-                <Card title="In process" />
-                <Card title="Done" />
+                <Card title="In process"
+                children={<div>
+                    <ul>
+                        {this.state.tasks.filter(() => {
+                            if(this.state.status === "toProcess") {
+                                return true;
+                            }
+                        }).map((item) => {
+                            return (
+                                <div key={item.id} className={css.tasks}>
+                                    <div>{item.text} </div>
+                                </div>
+
+                            )
+                        })}
+                    </ul>
+                </div>} />
+                <Card title="Done"
+                children={<div>
+                    <ul>
+                        {this.state.tasks.map((item) => {
+                            return (
+                                <div key={item.id} className={css.tasks}>
+                                    <Button className={css.tasks_button} title="Приступить к выполнению" />
+                                    <div>{item.text} </div>
+                                </div>
+
+                            )
+                        })}
+                    </ul>
+                </div>} />
             </div>
         );
     }
