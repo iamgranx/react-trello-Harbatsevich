@@ -1,12 +1,22 @@
 .card {
-    width: 250px;
+    width: 450px;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 50px;
+    overflow: hidden;
+
     
   }
   
   .title {
-    background-color: grey;
+    background-color: antiquewhite;
     font-size: 20px;
     text-align: center;
+    border-radius: 50px;
+    font-size: 35px;
+
+  }
+  .card_body {
+    margin-left: 30px;
+    padding: 10px;
+
   }

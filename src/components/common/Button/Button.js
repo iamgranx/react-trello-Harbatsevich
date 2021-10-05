@@ -3,8 +3,9 @@ import React from "react";
 
 export function Button ({onClick, title}) {
     return (
-        <button onClick className={css.buttonClick}>
-            {title}
+        <button className={css.buttonClick}>
+                {title}
+                {onClick}
         </button>
     );
 }

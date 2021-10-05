@@ -1,12 +1,14 @@
 import css from "./styles.module.css"
 
-export function Card({ title, button, children, footer }) {
+export function Card({ title, children, footer, value }) {
     return (
       <div className={css.card}>
         <div className={css.title}> {title} </div>
-        {children}
-        text
-        {footer}
+        <div className={css.card_body}>
+          {value}
+          {children}
+          {footer}
+        </div>
       </div>
     );
   }

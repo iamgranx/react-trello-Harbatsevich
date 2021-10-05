@@ -13,15 +13,11 @@ export class Input extends React.Component {
 
     render() {
         return (
-            <div>
-                <label>
                     <input 
                     value={this.state.value}
                     onChange={this.changeValue}
                     className={css.input}
                     />
-                </label>
-            </div>
         );
     }
 }
