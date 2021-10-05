@@ -5,7 +5,6 @@ export function Button ({onClick, title}) {
     return (
         <button className={css.buttonClick}>
                 {title}
-                {onClick}
         </button>
     );
 }
