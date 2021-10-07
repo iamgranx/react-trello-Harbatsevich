@@ -2,7 +2,7 @@ import React from "react";
 import css from "./styles.module.css"
 import { Card } from "../Card";
 // import { Input } from "../common/Input";
-import { Button } from "../common/Button";
+// import { Button } from "../common/Button";
 
 
 export class Dashboard extends React.Component {
@@ -11,13 +11,13 @@ export class Dashboard extends React.Component {
         this.state = {
             value: "",
             tasks: [
-                { text: "text1", id: 1,  status: "toDo" },
-                { text: "text2", id: 2,  status: "toDo" },
-                { text: "text3", id: 3,  status: "toDo" },
-                { text: "text4", id: 4,  status: "toDo" },
+                { text: "text1", id: 1, isDone: false, inProcess: false },
+                { text: "text2", id: 2, isDone: false, inProcess: false }
             ]
           };
           this.addTasksOnClick=this.addTasksOnClick.bind(this);
+          this.toStartProcess=this.toStartProcess.bind(this);
+          this.toEndProcess=this.toEndProcess.bind(this);
 
     };
 
@@ -27,25 +27,32 @@ export class Dashboard extends React.Component {
         
       };
 
-//добавляем новые задачи через кнопку
+//добавляем новые задачи через кнопки
     addTasksOnClick () {
         this.setState((prevState) => ({
             tasks: [
               ...prevState.tasks,
-              { text: prevState.value, status:"toDo", id: prevState.tasks.length + 1 }
+              { text: prevState.value, isDone: false, inProcess: false, id: prevState.tasks.length + 1 }
             ],
            value: ""
           }));
     };
     toStartProcess = () => {
         this.setState((prevState) => ({
-            status: "toProcess"
+            inProcess: !prevState.inProcess
         }));
 
     };
+    toEndProcess =() => {
+        this.setState((prevState) => ({
+            isDone: !prevState.isDone 
+        }));
+        this.setState((prevState) => ({
+            inProcess: !prevState.inProcess
+        }));
+    };
 
     filterTasks () {
-
     }
     
     render(){
@@ -55,12 +62,27 @@ export class Dashboard extends React.Component {
                 title="ToDo"
                 children={<div>
                     <ul>
-                        {this.state.tasks.map((item) => {
+                        {/* {this.state.tasks.filter((item) => {
+                            if(this.state.inProcess === false && this.state.isDone === false) {
+                                return item.isDone;
+                            } else {
+                                return false;
+                            }
+                        }).map((item) => {
                             return (
                                 <div key={item.id} className={css.tasks}>
-                                    <button type="button" onClick={this.toStartProcess}>start</button>
-                                    <div>{item.text} </div>
+                                    <div>
+                                        <button type="button" onClick={this.toStartProcess}>start</button>{item.text}
+                                     </div>
                                 </div>
+                            )
+                        })
+                    } */}
+                    {this.state.tasks.map((item) => {
+                            return (
+                                <li key={item.id} className={css.tasks}>
+                                    <div><button type="button" onClick={this.toStartProcess}>start</button>{item.text}</div>
+                                </li>
 
                             )
                         })}
@@ -72,9 +94,9 @@ export class Dashboard extends React.Component {
                             <input 
                                 value={this.state.value}
                                 onChange={this.changeValue}
-                                className={css.input} /> 
+                                className={css.input} />
+                                <button type="button" onClick={this.addTasksOnClick}>ADD</button>
                         </label>
-                        <button type="button" onClick={this.addTasksOnClick}>ADD</button>
                     </form>
                   }
                 >
@@ -83,14 +105,13 @@ export class Dashboard extends React.Component {
                 children={<div>
                     <ul>
                         {this.state.tasks.filter(() => {
-                            if(this.state.status === "toProcess") {
-                                return true;
-                            }
+                            if(this.state.inProcess === true) 
+                                return true; 
                         }).map((item) => {
                             return (
-                                <div key={item.id} className={css.tasks}>
-                                    <div>{item.text} </div>
-                                </div>
+                                <li key={item.id} className={css.tasks}>
+                                    <div><button type="button" onClick={this.toEndProcess}>end</button>{item.text}</div>
+                                </li>
 
                             )
                         })}
@@ -99,12 +120,14 @@ export class Dashboard extends React.Component {
                 <Card title="Done"
                 children={<div>
                     <ul>
-                        {this.state.tasks.map((item) => {
+                    {this.state.tasks.filter(() => {
+                            if(this.state.isDone === true) 
+                                return true; 
+                        }).map((item) => {
                             return (
                                 <div key={item.id} className={css.tasks}>
-                                    <Button className={css.tasks_button} title="Приступить к выполнению" />
-                                    <div>{item.text} </div>
-                                </div>
+                                <div>{item.text}</div>
+                            </div>
 
                             )
                         })}
