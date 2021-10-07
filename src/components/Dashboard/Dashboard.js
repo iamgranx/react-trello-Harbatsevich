@@ -11,8 +11,8 @@ export class Dashboard extends React.Component {
         this.state = {
             value: "",
             tasks: [
-                { text: "text1", id: 1, isDone: false, inProcess: false },
-                { text: "text2", id: 2, isDone: false, inProcess: false }
+                { text: "text1", id: 1, status: "todo" },
+                { text: "text2", id: 2, status: "todo" }
             ]
           };
           this.addTasksOnClick=this.addTasksOnClick.bind(this);
@@ -37,11 +37,12 @@ export class Dashboard extends React.Component {
            value: ""
           }));
     };
-    toStartProcess = () => {
+    toStartProcess = (id) => {
         this.setState((prevState) => ({
-            inProcess: !prevState.inProcess
-        }));
-
+            tasks: prevState.tasks.map((task) =>
+              task.id !== id ? task : { ...task, status: "in_process" }
+            )
+          }));
     };
     toEndProcess =() => {
         this.setState((prevState) => ({
