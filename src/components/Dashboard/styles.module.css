@@ -1,6 +1,12 @@
 .wrapper {
     display: flex;
+    flex-direction: column;
+
+}
+.card_wrapper {
+    display: flex;
     justify-content: space-around;
+    margin-bottom: 25px;
 }
 
 .dashboard_input {
